@@ -1,0 +1,22 @@
+#cloud-config
+# vim: syntax=yaml
+ssh_pwauth: True
+chpasswd:
+  list:
+    - 'root:root'
+  expire: False
+
+preserve_hostname: false
+hostname: ${hostname}
+
+ssh_authorized_keys:
+  - ${ssh_public_key}
+
+packages:
+  - qemu-guest-agent
+
+runcmd:
+  - rm /etc/udev/rules.d/75-cloud-ifupdown.rules
+
+power_state:
+  mode: reboot
