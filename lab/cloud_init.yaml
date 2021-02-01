@@ -11,3 +11,9 @@ ssh_authorized_keys:
 
 packages:
   - qemu-guest-agent
+
+runcmd:
+  - rm /etc/udev/rules.d/75-cloud-ifupdown.rules
+
+power_state:
+  mode: reboot

@@ -13,6 +13,7 @@ Terraform code using [terraform-provider-libvirt](https://github.com/dmacvicar/t
 to create VMs in libvirt on Linux. These are based of the Debian OpenStack cloud image with set up
 performed via cloud-init.
 
+
 # Bootstrap
 
 Janky Ansible to set up nodes for kubeadm. User containerd.io, follows the requirements set out in the kubeadm docs.
