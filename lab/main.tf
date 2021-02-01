@@ -17,6 +17,7 @@ locals {
     memory = "4096"
     count  = 3
   }
+  ssh_public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDy6EgOgmiyjhTQqVNDmqVF1u0ahvQUOf1zvgGaIDRMk matt@manjaro"
 }
 
 # instance the provider
@@ -45,7 +46,7 @@ module "controllers" {
   name_prefix    = "control"
   network_offset = 16
 
-  user_data = file("${path.module}/cloud_init.yaml")
+  ssh_public_key = local.ssh_public_key
 
   storage_pool_name = libvirt_pool.cluster.name
   base_volume_id    = libvirt_volume.debian.id
@@ -60,7 +61,7 @@ module "workers" {
   name_prefix    = "worker"
   network_offset = 32
 
-  user_data = file("${path.module}/cloud_init.yaml")
+  ssh_public_key = local.ssh_public_key
 
   storage_pool_name = libvirt_pool.cluster.name
   base_volume_id    = libvirt_volume.debian.id

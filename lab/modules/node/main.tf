@@ -9,9 +9,12 @@ terraform {
 }
 
 resource "libvirt_cloudinit_disk" "this" {
-  count     = var.number
-  name      = format("%s-cloud-init-%d.iso", var.name_prefix, count.index + 1)
-  user_data = var.user_data
+  count = var.number
+  name  = format("%s%d-cloud-init.iso", var.name_prefix, count.index + 1)
+  user_data = templatefile("${path.module}/cloud_init.yaml", {
+    hostname       = format("%s%d", var.name_prefix, count.index + 1)
+    ssh_public_key = var.ssh_public_key
+  })
   network_config = templatefile("${path.module}/network_config.yaml", {
     network_addr  = format("%s.%d/24", var.network_prefix, var.network_offset + count.index)
     gateway_ip    = format("%s.%d", var.network_prefix, var.gateway_offset),

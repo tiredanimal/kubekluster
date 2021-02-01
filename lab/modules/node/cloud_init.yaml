@@ -6,8 +6,11 @@ chpasswd:
     - 'root:root'
   expire: False
 
+preserve_hostname: false
+hostname: ${hostname}
+
 ssh_authorized_keys:
-  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDy6EgOgmiyjhTQqVNDmqVF1u0ahvQUOf1zvgGaIDRMk matt@manjaro
+  - ${ssh_public_key}
 
 packages:
   - qemu-guest-agent

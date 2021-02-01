@@ -49,9 +49,9 @@ variable "gateway_offset" {
   default     = 1
 }
 
-variable "user_data" {
+variable "ssh_public_key" {
   type        = string
-  description = "Cloud-init user-data"
+  description = "SSH Public key to use for access to the debian user"
 }
 
 variable "base_volume_id" {
