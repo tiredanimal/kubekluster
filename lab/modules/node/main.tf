@@ -27,6 +27,7 @@ resource "libvirt_volume" "os" {
   count          = var.number
   name           = format("%s%d-os", var.name_prefix, count.index + 1)
   base_volume_id = var.base_volume_id
+  size           = var.size
 }
 
 # Create the machine
