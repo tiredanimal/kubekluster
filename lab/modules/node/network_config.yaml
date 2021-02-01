@@ -1,0 +1,6 @@
+version: 2
+ethernets:
+  eth0:
+    addresses: [ "${network_addr}" ]
+    gateway4: "${gateway_ip}"
+    nameservers: [ "${nameserver_ip}" ]
