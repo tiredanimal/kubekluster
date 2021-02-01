@@ -1,6 +1,8 @@
+[controllers]
 control1
 #control2
 #control3
+[workers]
 worker1
 worker2
 #worker2
