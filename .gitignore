@@ -2,3 +2,4 @@
 .terraform
 *.tfstate*
 *.qcow2
+*.tfvars
