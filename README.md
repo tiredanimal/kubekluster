@@ -17,10 +17,7 @@ bootstrap - Ansible code to prep nodes for kubeadm to do its stuff
 * `make`
 * `ssh control1`
 * `sudo -i`
-* `kubeadm init --config=kubeadm_config.yaml`
-
-Follow instructions to add workers 
-
+* `kubeadm init --config=kubeadm_config.yaml`. Follow the displayed instructions to add the workers. 
 * Back on control1 `sudo -i` to root again
 * `export KUBECONFIG=/etc/kubernetes/admin.conf`
 * `kubectl get no`  should show you all your nodes
