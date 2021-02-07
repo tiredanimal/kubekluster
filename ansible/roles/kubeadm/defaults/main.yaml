@@ -1,2 +1,7 @@
 ---
 kube_cidr: 192.168.33.0/24
+kube_version: 1.19.7
+kube_vversion: v{{kube_version}}
+kubelet_version: "{{kube_version}}-00"
+kubeadm_version: "{{kube_version}}-00"
+kubectl_version: "{{kube_version}}-00"

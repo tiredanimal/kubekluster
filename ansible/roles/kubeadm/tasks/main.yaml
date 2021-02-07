@@ -65,7 +65,7 @@
     repo: "deb [arch={{ deb_architecture.stdout }}] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
     state: present
 
-- name: Copy kernel modules config
+- name: Install containerd
   ansible.builtin.apt:
     name:
       - containerd.io
@@ -95,9 +95,9 @@
 - name: Install kubeadm etc
   ansible.builtin.apt:
     name:
-      - kubelet
-      - kubeadm
-      - kubectl
+      - kubelet={{kubelet_version}}
+      - kubeadm={{kubeadm_version}}
+      - kubectl={{kubectl_version}}
     update_cache: yes
 
 - name: Kubelet cgroup config
@@ -123,7 +123,3 @@
     owner: root
     group: root
     mode: '0644'
-
-- name: Instruct
-  ansible.builtin.debug:
-    msg: "ssh to control1, sudo -i -- kubeadm init --apiserver-advertise-address {{ kube_ip }} --pod-network-cidr 10.244.0.0/16"

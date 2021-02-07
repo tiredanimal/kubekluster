@@ -20,45 +20,51 @@ For Kubernetes: kubectl, kustomize
 * Clone repo
 * `cat ssh_config >>$HOME/.ssh/config` 
 
-Terraform:
+### Vagrant
+
+* Check Vagrantfile ssh_public_key is correct for the key type you use.
+* `vagrant up`
+* `vagrant ssh control1 -c 'sudo -i -- kubeadm init --kubernetes-version v1.19.7 --apiserver-advertise-address 192.168.33.16 --pod-network-cidr 10.244.0.0/16'`
+* `vagrant ssh control1 -c 'sudo cp /etc/kubernetes/admin.conf /vagrant'`
+* `export KUBECONFIG=$(pwd)/admin.conf`
+* `kubectl get no` should show the controller
+* Run `kustomize build ./kubernetes/base/tigera-operator | kubectl apply -f -` twice (CRD needs loading for the config to take, this needs some work)
+* Add workers following the output of `kubeadm init`
+
+### Terraform
+
 * `cd terraform-libvirt`. Create `terraform.tfvars` containing `ssh_public_key="<YourSSHPublicKey>"`
 * `make`
 * `cd ../ansible`
 * `make`
-
-OR Vagrant:
-* Check ssh_public_key is correct for the key type you use.
-* `vagrant up`
-
-Then:
 * `ssh control1`
-* `sudo -i`
-* `kubeadm init --apiserver-advertise-address 192.168.33.16 --pod-network-cidr 10.244.0.0/16`. Follow the displayed instructions to add the workers.
-* Copy /etc/kubernetes/admin.conf to your workstation from `control1`
+* `sudo -i -- kubeadm init --kubernetes-version v1.19.7 --apiserver-advertise-address 192.168.33.16 --pod-network-cidr 10.244.0.0/16'`.
+* Copy /etc/kubernetes/admin.conf to your workstation from `control1`, then follow the steps from `export KUBECONFIG...` in the Vagrant section.
 
-* `export KUBECONFIG=$(pwd)/admin.conf`
-* `kubectl get no`  should show you all your nodes
-* Install Calico operator `kustomize build ./kubernetes/base/tigera-operator | kubectl apply -f -`
-* Run `kustomize build ./kubernetes/base/tigera-operator | kubectl apply -f -` again.
-* Check progress with `watch kubectl get po -A`
+### MetalLB
+
+See https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/issues/25#issuecomment-742616668
+
+* `kustomize build ./kubernetes/base/metallb | kubectl apply -f -`
+* `kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"`
 
 
-# terraform-libvirt
+## terraform-libvirt
 
 Terraform code using [terraform-provider-libvirt](https://github.com/dmacvicar/terraform-provider-libvirt)
 to create VMs in libvirt on Linux. These are based of the Debian OpenStack cloud image with set up
 performed via cloud-init.
 
-# ansible
+## ansible
 
 Janky Ansible to set up nodes for kubeadm. User containerd.io, follows the requirements set out in the kubeadm docs.
 
-# Repos of interest
+## Repos of interest
 
 * https://github.com/treilly94/packer-pi
 * https://github.com/tiredanimal/ubuntu-k8s-cluster
 
-# Plans
+## Plans
 
 CNI: Callico
 CSI: NFS, Longhorn
