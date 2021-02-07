@@ -48,6 +48,10 @@ See https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/issues/25
 * `kustomize build ./kubernetes/base/metallb | kubectl apply -f -`
 * `kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"`
 
+### NFS CSI
+Basic storage CSI https://github.com/kubernetes-csi/csi-driver-nfs
+
+* `kustomize build ./kubernetes/base/csi-driver-nfs/master-87e6ba8 | kubectl apply -f -`
 
 ## terraform-libvirt
 
@@ -66,7 +70,7 @@ Janky Ansible to set up nodes for kubeadm. User containerd.io, follows the requi
 
 ## Plans
 
-CNI: Callico
-CSI: NFS, Longhorn
-LB: MetalLB
-Ingress: Nginx, Contour
+* CNI: Callico ✅
+* CSI: NFS ✅, Longhorn
+* LB: MetalLB ✅
+* Ingress: Nginx, Contour
