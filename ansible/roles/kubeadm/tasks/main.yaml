@@ -1,5 +1,8 @@
 ---
 
+- name: Install Python netaddr
+  package:
+
 - name: Generate /etc/hosts file
   ansible.builtin.template:
     src: hosts.j2
@@ -7,7 +10,6 @@
     owner: root
     group: root
     mode: '0644'
-
 
 - name: Copy kernel modules config
   ansible.builtin.copy:
@@ -25,7 +27,7 @@
     - overlay
     - br_netfilter
 
-- name: Set sysctl entries 
+- name: Set sysctl entries
   ansible.posix.sysctl:
     name: "{{ item }}"
     value: '1'
@@ -37,8 +39,8 @@
     - net.bridge.bridge-nf-call-iptables
     - net.bridge.bridge-nf-call-ip6tables
 
-- name: Copy kernel modules config
-  ansible.builtin.apt:
+- name: Install required software packages
+  ansible.builtin.package:
     name:
       - apt-transport-https
       - ca-certificates
@@ -98,6 +100,14 @@
       - kubectl
     update_cache: yes
 
+- name: Kubelet cgroup config
+  ansible.builtin.copy:
+    src: default-kubelet
+    dest: /etc/default/kubelet
+    owner: root
+    group: root
+    mode: 0644
+
 - name: kubelet config dir
   ansible.builtin.file:
     path: /var/lib/kubelet
@@ -105,14 +115,6 @@
     owner: root
     group: root
     mode: '0755'
-
-- name: kubelet config
-  ansible.builtin.template:
-    src: kubeadm_config.yaml.j2
-    dest: /root/kubeadm_config.yaml
-    owner: root
-    group: root
-    mode: '0644'
 
 - name: Calico config
   ansible.builtin.copy:
@@ -124,4 +126,4 @@
 
 - name: Instruct
   ansible.builtin.debug:
-    msg: "ssh to control1, sudo -i, the run kubeadm init --config kubeadm_config.yaml"
+    msg: "ssh to control1, sudo -i -- kubeadm init --apiserver-advertise-address {{ kube_ip }} --pod-network-cidr 10.244.0.0/16"

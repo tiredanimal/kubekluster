@@ -1,35 +1,35 @@
 Host control1
-  Hostname 192.168.122.16
+  Hostname 192.168.33.16
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
   User debian
 
 Host control2
-  Hostname 192.168.122.17
+  Hostname 192.168.33.17
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
   User debian
 
 Host control3
-  Hostname 192.168.122.18
+  Hostname 192.168.33.18
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
   User debian
 
 Host worker1
-  Hostname 192.168.122.32
+  Hostname 192.168.33.32
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
   User debian
 
 Host worker2
-  Hostname 192.168.122.33
+  Hostname 192.168.33.33
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
   User debian
 
 Host worker3
-  Hostname 192.168.122.34
+  Hostname 192.168.33.34
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
   User debian

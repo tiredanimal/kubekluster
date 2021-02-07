@@ -29,7 +29,7 @@ variable "size" {
 variable "network_prefix" {
   type        = string
   description = "Starting 3 octets of the /24 the VMs will be provisioned into"
-  default     = "192.168.122"
+  default     = "192.168.33"
 }
 
 variable "network_offset" {

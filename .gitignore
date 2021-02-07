@@ -3,3 +3,4 @@
 *.tfstate*
 *.qcow2
 *.tfvars
+.vagrant
