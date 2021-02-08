@@ -49,6 +49,7 @@ See https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/issues/25
 * `kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"`
 
 ### NFS CSI
+
 Basic storage CSI https://github.com/kubernetes-csi/csi-driver-nfs
 
 * `kustomize build ./kubernetes/base/csi-driver-nfs/master-87e6ba8 | kubectl apply -f -`

@@ -1,6 +1,0 @@
----
-resources:
-  - csi-nfs-controller.yaml
-  - csi-nfs-driverinfo.yaml
-  - csi-nfs-node.yaml
-  - rbac-csi-nfs-controller.yaml

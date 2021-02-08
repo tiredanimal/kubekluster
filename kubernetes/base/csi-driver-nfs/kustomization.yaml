@@ -1,0 +1,6 @@
+---
+resources:
+  - master-87e6ba8/csi-nfs-controller.yaml
+  - master-87e6ba8/csi-nfs-driverinfo.yaml
+  - master-87e6ba8/csi-nfs-node.yaml
+  - master-87e6ba8/rbac-csi-nfs-controller.yaml
