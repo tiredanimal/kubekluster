@@ -1,0 +1,8 @@
+---
+- name: Calico config
+  ansible.builtin.template:
+    src: calico-custom-config.yaml.j2
+    dest: /root/calico-custom-config.yaml
+    owner: root
+    group: root
+    mode: "0644"

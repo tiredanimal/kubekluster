@@ -4,7 +4,6 @@
 ff02::1		ip6-allnodes
 ff02::2		ip6-allrouters
 
-
 {% for item in play_hosts %}
 {{ hostvars[item]['ansible_all_ipv4_addresses'] | ansible.netcommon.ipaddr(kube_cidr) | first }}  {{ item }}
 {% endfor %}

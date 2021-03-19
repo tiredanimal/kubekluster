@@ -5,3 +5,10 @@ kube_vversion: v{{kube_version}}
 kubelet_version: "{{kube_version}}-00"
 kubeadm_version: "{{kube_version}}-00"
 kubectl_version: "{{kube_version}}-00"
+advertiseAddress: "{{ ansible_all_ipv4_addresses | ansible.netcommon.ipaddr(kube_cidr) | first }}"
+clusterName: tiredanimal
+kernel_modules:
+  - br_netfilter
+  - overlay
+
+pod_network_cidr: 10.244.0.0/16

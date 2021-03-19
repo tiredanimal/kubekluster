@@ -1,5 +1,54 @@
 ---
 - hosts: all
   become: yes
+  vars:
+    pod_network_cidr: 10.244.0.0/16
+    kubernetes_version: 1.19.7
+
   roles:
-    - kubeadm
+    - role: kubeadm
+      vars:
+        pod_network_cidr: 10.244.0.0/16
+        advertiseAddress: 192.168.33.16 # IP of control1
+        kube_version: 1.19.7
+- hosts: control1
+  become: yes
+  tags: ["init"]
+  tasks:
+    - name: Init first controller
+      ansible.builtin.command:
+        cmd: kubeadm init --kubernetes-version v1.19.7 --apiserver-advertise-address 192.168.33.16 --pod-network-cidr 10.244.0.0/16
+        creates: /etc/kubernetes/admin.conf
+    - name: Get Kube admin config
+      ansible.builtin.fetch:
+        src: /etc/kubernetes/admin.conf
+        dest: admin.conf
+        flat: yes
+
+- hosts: control1
+  become: yes
+  tags: ["join_workers"]
+  tasks:
+    - name: Get token
+      ansible.builtin.command:
+        cmd: kubeadm token create --print-join-command
+      register: kubeadm_token_output
+    - ansible.builtin.set_fact:
+        kubeadm_join_cluster_command: "{{ kubeadm_token_output.stdout }}"
+    - debug: var=kubeadm_join_cluster_command
+
+- hosts: workers
+  become: yes
+  tags: ["join_workers"]
+  tasks:
+    - ansible.builtin.command:
+        cmd: '{{ hostvars["control1"]["kubeadm_join_cluster_command"] }}'
+        creates: /etc/kubernetes/kubelet.conf
+
+- hosts: localhost
+  become: no
+  tasks:
+    - command:
+        cmd: kubectl apply -k ../kubernetes/base/tigera-operator
+      environment:
+        KUBECONFIG: admin.conf

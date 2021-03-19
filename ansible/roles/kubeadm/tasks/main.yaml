@@ -1,39 +1,14 @@
 ---
+- name: Configurer kernel parameters
+  ansible.builtin.include_tasks: kernel.yaml
+
 - name: Generate /etc/hosts file
   ansible.builtin.template:
     src: hosts.j2
     dest: /etc/hosts
     owner: root
     group: root
-    mode: '0644'
-
-- name: Copy kernel modules config
-  ansible.builtin.copy:
-    src: modules-load.conf
-    dest: /etc/modules-load.d/k8s.conf
-    owner: root
-    group: root
-    mode: '0644'
-
-- name: Load kernel modules
-  community.general.modprobe:
-    name: "{{ item }}"
-    state: present
-  loop:
-    - overlay
-    - br_netfilter
-
-- name: Set sysctl entries
-  ansible.posix.sysctl:
-    name: "{{ item }}"
-    value: '1'
-    sysctl_set: yes
-    state: present
-    reload: yes
-  loop:
-    - net.ipv4.ip_forward
-    - net.bridge.bridge-nf-call-iptables
-    - net.bridge.bridge-nf-call-ip6tables
+    mode: "0644"
 
 - name: Install required software packages
   ansible.builtin.package:
@@ -46,77 +21,11 @@
       - open-iscsi
     update_cache: yes
 
-- name: Add Docker APT signing key
-  ansible.builtin.apt_key:
-    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
-    url: https://download.docker.com/linux/debian/gpg
-    keyring: /etc/apt/trusted.gpg.d/docker.gpg
-
-- name: Get DEB architecture
-  ansible.builtin.shell: dpkg --print-architecture
-  register: deb_architecture
-  changed_when: false
-
-- name: Add Docker repo
-  ansible.builtin.apt_repository:
-    repo: "deb [arch={{ deb_architecture.stdout }}] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
-    state: present
-
 - name: Install containerd
-  ansible.builtin.apt:
-    name:
-      - containerd.io
-    update_cache: yes
+  ansible.builtin.include_tasks: containerd.yaml
 
-- name: containerd config
-  ansible.builtin.copy:
-    src: containerd_config.toml
-    dest: /etc/containerd/config.toml
-    owner: root
-    group: root
-    mode: '0644'
-  notify:
-    - restart containerd
+- name: Install Kubernetes tools
+  ansible.builtin.include_tasks: kubetools.yaml
 
-- name: Add Google Linux apt key
-  ansible.builtin.apt_key:
-    id: 59FE0256827269DC81578F928B57C5C2836F4BEB
-    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-    keyring: /etc/apt/trusted.gpg.d/glinux.gpg
-
-- name: Add Google Linux repo
-  ansible.builtin.apt_repository:
-    repo: "deb https://apt.kubernetes.io/ kubernetes-xenial main"
-    state: present
-
-- name: Install kubeadm etc
-  ansible.builtin.apt:
-    name:
-      - kubelet={{kubelet_version}}
-      - kubeadm={{kubeadm_version}}
-      - kubectl={{kubectl_version}}
-    update_cache: yes
-
-- name: Kubelet cgroup config
-  ansible.builtin.copy:
-    src: default-kubelet
-    dest: /etc/default/kubelet
-    owner: root
-    group: root
-    mode: 0644
-
-- name: kubelet config dir
-  ansible.builtin.file:
-    path: /var/lib/kubelet
-    state: directory
-    owner: root
-    group: root
-    mode: '0755'
-
-- name: Calico config
-  ansible.builtin.copy:
-    src: calico-custom-config.yaml
-    dest: /root/calico-custom-config.yaml
-    owner: root
-    group: root
-    mode: '0644'
+- name: Configure calico
+  ansible.builtin.include_tasks: calico.yaml

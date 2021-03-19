@@ -1,0 +1,5 @@
+---
+resources:
+  - ../base/tigera-operator
+  - ../base/metallb
+  - ../base/csi-driver-nfs
