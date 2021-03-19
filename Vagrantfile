@@ -4,11 +4,11 @@
 ssh_public_key = "#{ENV['HOME']}/.ssh/id_ed25519.pub"
 
 cluster = {
-  "control1" => { :ip => "192.168.33.16", :primary => true},
-#  "controller2" => { :ip => "192.168.33.17", :primary => true},
-#  "controller3" => { :ip => "192.168.33.18", :primary => true},
-  "worker1" => { :ip => "192.168.33.32",:memory=>2048},
-  "worker2" => { :ip => "192.168.33.33",:memory=>2048},
+  "control1" => { :ip => "192.168.33.16", :vagrant_primary => true},
+  # "control2" => { :ip => "192.168.33.17", :primary => true},
+  # "control3" => { :ip => "192.168.33.18", :primary => true},
+  "worker1" => { :ip => "192.168.33.32",:memory=>4096},
+  "worker2" => { :ip => "192.168.33.33",:memory=>4096},
 #  "worker3" => { :ip => "192.168.33.34",:memory=>2048}
 }
 
@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder ".", "/vagrant",:nfs_version => 3
 
   cluster.each_with_index do |(hostname, info), index|
-    config.vm.define hostname, primary: info.fetch(:primary,false) do |node|
+    config.vm.define hostname, vagrant_primary: info.fetch(:vagrant_primary,false) do |node|
       node.vm.hostname = hostname
       node.vm.network  :private_network, :type => "static", :ip => "#{info[:ip]}"
       node.vm.provider :libvirt do |libvirt|
@@ -42,9 +42,12 @@ Vagrant.configure("2") do |config|
       end
       if index == cluster.length-1
         node.vm.provision :ansible do |ansible|
-          ansible.limit = "all"
+          ansible.limit = "all,localhost"
           ansible.config_file = "./ansible/ansible.cfg"
           ansible.playbook = "./ansible/main.yaml"
+          ansible.groups = {
+            "workers" => ["worker1","worker2"]
+          }
         end
       end
     end

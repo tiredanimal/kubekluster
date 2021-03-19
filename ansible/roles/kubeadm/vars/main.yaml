@@ -1,2 +1,0 @@
----
-kube_ip: "{{ ansible_all_ipv4_addresses | ansible.netcommon.ipaddr(kube_cidr) | first }}"

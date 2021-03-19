@@ -1,0 +1,35 @@
+---
+- name: Add Google Linux apt key
+  ansible.builtin.apt_key:
+    id: 59FE0256827269DC81578F928B57C5C2836F4BEB
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    keyring: /etc/apt/trusted.gpg.d/glinux.gpg
+
+- name: Add Google Linux repo
+  ansible.builtin.apt_repository:
+    repo: "deb https://apt.kubernetes.io/ kubernetes-xenial main"
+    state: present
+
+- name: Install kubeadm etc
+  ansible.builtin.apt:
+    name:
+      - kubelet={{kubelet_version}}
+      - kubeadm={{kubeadm_version}}
+      - kubectl={{kubectl_version}}
+    update_cache: yes
+
+- name: Kubelet cgroup config
+  ansible.builtin.copy:
+    src: default-kubelet
+    dest: /etc/default/kubelet
+    owner: root
+    group: root
+    mode: 0644
+
+- name: kubelet config dir
+  ansible.builtin.file:
+    path: /var/lib/kubelet
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
