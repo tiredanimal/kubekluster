@@ -10,7 +10,7 @@ cluster = {
   # "control3" => { :ip => "192.168.33.18" },
   "worker1" => { :ip => "192.168.33.32",:memory=>4096},
   "worker2" => { :ip => "192.168.33.33",:memory=>4096},
-#  "worker3" => { :ip => "192.168.33.34",:memory=>2048}
+  "worker3" => { :ip => "192.168.33.34",:memory=>4096}
 }
 
 Vagrant.configure("2") do |config|
@@ -47,7 +47,7 @@ Vagrant.configure("2") do |config|
           ansible.config_file = "./ansible/ansible.cfg"
           ansible.playbook = "./ansible/main.yaml"
           ansible.groups = {
-            "workers" => ["worker1","worker2"]
+            "workers" => ["worker1","worker2","worker3"]
           }
         end
       end
