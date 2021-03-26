@@ -24,12 +24,8 @@ For Kubernetes: kubectl, kustomize
 
 * Check Vagrantfile ssh_public_key is correct for the key type you use.
 * `vagrant up`
-* `vagrant ssh control1 -c 'sudo -i -- kubeadm init --kubernetes-version v1.19.7 --apiserver-advertise-address 192.168.33.16 --pod-network-cidr 10.244.0.0/16'`
-* `vagrant ssh control1 -c 'sudo cp /etc/kubernetes/admin.conf /vagrant'`
-* `export KUBECONFIG=$(pwd)/admin.conf`
-* `kubectl get no` should show the controller
-* Run `kustomize build ./kubernetes/base/tigera-operator | kubectl apply -f -` twice (CRD needs loading for the config to take, this needs some work)
-* Add workers following the output of `kubeadm init`
+
+Cluster with worker nodes will be created, with Calico as the CNI
 
 ### Terraform
 
@@ -37,9 +33,8 @@ For Kubernetes: kubectl, kustomize
 * `make`
 * `cd ../ansible`
 * `make`
-* `ssh control1`
-* `sudo -i -- kubeadm init --kubernetes-version v1.19.7 --apiserver-advertise-address 192.168.33.16 --pod-network-cidr 10.244.0.0/16'`.
-* Copy /etc/kubernetes/admin.conf to your workstation from `control1`, then follow the steps from `export KUBECONFIG...` in the Vagrant section.
+
+TODO: Needs testing, not worked on in some time.
 
 ### MetalLB
 

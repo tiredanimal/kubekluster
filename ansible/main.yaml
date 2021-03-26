@@ -50,6 +50,7 @@
   tasks:
     - command:
         cmd: kubectl apply -k ../kubernetes/base/tigera-operator
+      ignore_errors: yes
       environment:
         KUBECONFIG: admin.conf
     - pause:
