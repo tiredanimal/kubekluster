@@ -4,4 +4,6 @@ resources:
   - ../../base/metallb
   - ../../base/csi-driver-nfs
   - ../../base/longhorn/v1.1.0
+  - ../../base/postgresql/crunchydata/v4.6.2
+  - ./storageclasses.yaml
     # - postgresql/config.yaml
