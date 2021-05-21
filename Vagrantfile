@@ -43,6 +43,7 @@ Vagrant.configure("2") do |config|
       end
       if index == cluster.length-1
         node.vm.provision :ansible do |ansible|
+          ansible.compatibility_mode = "2.0"
           ansible.limit = "all,localhost"
           ansible.config_file = "./ansible/ansible.cfg"
           ansible.playbook = "./ansible/main.yaml"

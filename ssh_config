@@ -2,34 +2,34 @@ Host control1
   Hostname 192.168.33.16
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
-  User debian
+  User vagrant
 
 Host control2
   Hostname 192.168.33.17
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
-  User debian
+  User vagrant
 
 Host control3
   Hostname 192.168.33.18
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
-  User debian
+  User vagrant
 
 Host worker1
   Hostname 192.168.33.32
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
-  User debian
+  User vagrant
 
 Host worker2
   Hostname 192.168.33.33
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
-  User debian
+  User vagrant
 
 Host worker3
   Hostname 192.168.33.34
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
-  User debian
+  User vagrant
