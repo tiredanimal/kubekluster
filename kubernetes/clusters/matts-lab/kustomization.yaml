@@ -4,6 +4,7 @@ resources:
   - ../../base/metallb
   - ../../base/csi-driver-nfs
   - ../../base/longhorn/v1.1.0
+  - ../../base/metrics-server/v0.3.7
   - ./storageclasses.yaml
   - github.com/stefanprodan/podinfo//kustomize
   # - ../../base/postgresql/zalando-v1.6.1
