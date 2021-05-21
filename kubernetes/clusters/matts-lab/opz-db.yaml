@@ -1,0 +1,23 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: opz-cluster
+spec:
+  teamId: "opz"
+  volume:
+    size: 10Gi
+  numberOfInstances: 1
+  users:
+    # database owner
+    admin:
+      - superuser
+      - createdb
+
+    # role for application foo
+    gitea: []
+
+  #databases: name->owner
+  databases:
+    gitea: gitea
+  postgresql:
+    version: "13"

@@ -1,0 +1,141 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gitea
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitea
+spec:
+  selector:
+    matchLabels:
+      app: gitea
+  template:
+    metadata:
+      labels:
+        app: gitea
+    spec:
+      containers:
+        - name: gitea
+          image: gitea/gitea:1.14.0-rc2-rootless
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 2222
+              name: ssh
+              protocol: TCP
+            - containerPort: 3000
+              name: http
+              protocol: TCP
+          env:
+            - name: DOMAIN
+              value: localhost
+            - name: SSH_DOMAIN
+              value: localhost
+            - name: DB_TYPE
+              value: postgres
+            - name: DB_HOST
+              value: opz-cluster
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: gitea.opz-cluster.credentials
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: gitea.opz-cluster.credentials
+                  key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gitea-web
+  namespace: gitea
+  labels:
+    app: gitea-web
+spec:
+  ports:
+    - port: 80
+      targetPort: 3000
+      name: http
+  selector:
+    app: gitea
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gitea-ssh
+  namespace: gitea
+  labels:
+    app: gitea-ssh
+spec:
+  ports:
+    - port: 22
+      targetPort: 2222
+      name: ssh
+  selector:
+    app: gitea
+  type: LoadBalancer
+# #
+# # ref:
+# #   https://github.com/go-gitea/gitea/blob/v1.13.0-dev/contrib/k8s/gitea.yml
+# #   https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/
+# #
+# ####### </ Jeffery Bagirimvano >
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   name: gitea
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: giteanfig)
+ENV GITEA_APP_INI /etc/gitea/app.ini
+#     app: gitea
+# spec:
+#   replicas: 1
+#   template:
+#     metadata:
+#       name: gitea
+#       labels:
+#         app: gitea
+#     spec:
+#       containers:
+#       - name: gitea
+#         image: gitea/gitea:latest
+#         imagePullPolicy: Always
+#         volumeMounts:
+#           - mountPath: "/var/lib/gitea"
+#             name: "root"
+#           - mountPath: "/data"
+#             name: "data"
+#         ports:
+#           - containerPort: 22
+#             name: ssh
+#             protocol: TCP
+#           - containerPort: 3000
+#             name: http
+#             protocol: TCP
+#       restartPolicy: Always
+#       volumes:
+#         # Set up a data directory for gitea
+#         # For production usage, you should consider using PV/PVC instead(or simply using storage like NAS)
+#         # For more details, please see https://kubernetes.io/docs/concepts/storage/volumes/
+#       - name: "root"
+#         hostPath:
+#           # directory location on host
+#           path: "/var/lib/gitea"
+#           # this field is optional
+#           type: Directory
+#       - name: "data"
+#         hostPath:
+#           path: "/data/gitea"
+#           type: Directory
+#   selector:
+#     matchLabels:
+#       app: gitea

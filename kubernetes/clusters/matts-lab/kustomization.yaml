@@ -8,3 +8,6 @@ resources:
   - github.com/stefanprodan/podinfo//kustomize
   # - ../../base/postgresql/zalando-v1.6.1
   # - postgresql/config.yaml
+
+patches:
+  - patch-podinfo.yaml
