@@ -18,7 +18,10 @@ For Kubernetes: kubectl, kustomize
 ## Bootstrap
 
 * Clone repo
-* `cat ssh_config >>$HOME/.ssh/config` 
+
+SSH config for easy access to created VMs. Only needs doing once.
+
+* `cat ssh_config >>$HOME/.ssh/config`  
 
 ### Vagrant
 
@@ -26,6 +29,12 @@ For Kubernetes: kubectl, kustomize
 * `vagrant up`
 
 Cluster with worker nodes will be created, with Calico as the CNI
+
+K8S admin config can be configured via env var on your host. 
+
+```bash
+export KUBECONFIG=$(pwd)/ansible/admin.conf
+```
 
 ### Terraform
 
@@ -67,6 +76,6 @@ Janky Ansible to set up nodes for kubeadm. User containerd.io, follows the requi
 ## Plans
 
 * CNI: Callico ✅
-* CSI: NFS ✅, Longhorn
+* CSI: NFS ✅, Longhorn ✅
 * LB: MetalLB ✅
 * Ingress: Nginx, Contour

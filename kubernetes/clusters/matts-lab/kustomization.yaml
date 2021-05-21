@@ -4,4 +4,6 @@ resources:
   - ../../base/metallb
   - ../../base/csi-driver-nfs
   - ../../base/longhorn/v1.1.0
-    # - postgresql/config.yaml
+  - ./storageclasses.yaml
+  # - ../../base/postgresql/zalando-v1.6.1
+  # - postgresql/config.yaml
