@@ -5,5 +5,6 @@ resources:
   - ../../base/csi-driver-nfs
   - ../../base/longhorn/v1.1.0
   - ./storageclasses.yaml
+  - github.com/stefanprodan/podinfo//kustomize
   # - ../../base/postgresql/zalando-v1.6.1
   # - postgresql/config.yaml
