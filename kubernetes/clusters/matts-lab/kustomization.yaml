@@ -10,4 +10,4 @@ resources:
   # - postgresql/config.yaml
 
 patches:
-  - patch-podinfo.yaml
+  - path: patch-podinfo.yaml
