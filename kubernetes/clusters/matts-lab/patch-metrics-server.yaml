@@ -5,7 +5,7 @@ metadata:
   namespace: kube-system
 spec:
   template:
-    metadata:
+    spec:
       containers:
         - name: metrics-server
           args:
