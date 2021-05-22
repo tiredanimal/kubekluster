@@ -12,3 +12,4 @@ resources:
 
 patches:
   - path: patch-podinfo.yaml
+  - path: patch-metrics-server.yaml
