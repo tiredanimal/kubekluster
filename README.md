@@ -45,6 +45,12 @@ export KUBECONFIG=$(pwd)/ansible/admin.conf
 
 TODO: Needs testing, not worked on in some time.
 
+### Flux CD
+
+```bash
+flux bootstrap github --owner=tiredanimal --repository=kubekluster --branch=main --path=kubernetes/clusters/matts-lab
+```
+
 ### MetalLB
 
 See https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/issues/25#issuecomment-742616668
