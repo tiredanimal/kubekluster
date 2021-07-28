@@ -1,23 +1,25 @@
 ---
 - hosts: all
   become: yes
+  tags: ["install"]
   vars:
     pod_network_cidr: 10.244.0.0/16
-    kubernetes_version: 1.19.7
+    kubernetes_version: 1.20.9
 
   roles:
     - role: kubeadm
       vars:
         pod_network_cidr: 10.244.0.0/16
         advertiseAddress: 192.168.33.16 # IP of control1
-        kube_version: 1.19.7
+        kube_version: 1.20.9
+
 - hosts: control1
   become: yes
   tags: ["init"]
   tasks:
     - name: Init first controller
       ansible.builtin.command:
-        cmd: kubeadm init --kubernetes-version v1.19.7 --apiserver-advertise-address 192.168.33.16 --pod-network-cidr 10.244.0.0/16
+        cmd: kubeadm init --config=/root/kubeadm.yaml
         creates: /etc/kubernetes/admin.conf
     - name: Get Kube admin config
       ansible.builtin.fetch:

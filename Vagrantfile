@@ -5,7 +5,7 @@ ssh_public_key = "#{ENV['HOME']}/.ssh/id_ed25519.pub"
 
 # These IPs are also used in the config for metallb: ./base/metallb/config.yaml 
 cluster = {
-  "control1" => { :ip => "192.168.33.16", :vagrant_primary => true},
+  "control1" => { :ip => "192.168.33.16",:memory=>4096, :vagrant_primary => true},
   # "control2" => { :ip => "192.168.33.17" },
   # "control3" => { :ip => "192.168.33.18" },
   "worker1" => { :ip => "192.168.33.32",:memory=>4096},

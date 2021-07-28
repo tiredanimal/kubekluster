@@ -18,6 +18,11 @@
       - kubectl={{kubectl_version}}
     update_cache: yes
 
+- name: Install template
+  ansible.builtin.template:
+    src: kubeadm.yaml.j2
+    dest: /root/kubeadm.yaml
+
 - name: Kubelet cgroup config
   ansible.builtin.copy:
     src: default-kubelet
