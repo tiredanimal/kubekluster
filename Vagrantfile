@@ -26,6 +26,7 @@ Vagrant.configure("2") do |config|
       node.vm.provider :libvirt do |libvirt|
         libvirt.memory = info.fetch(:memory, 2048)
         libvirt.cpus = info.fetch(:cpus, 2)
+	libvirt.qemu_use_session = false
       end
       node.vm.provider "virtualbox" do |vbox|
         vbox.linked_clone = true
