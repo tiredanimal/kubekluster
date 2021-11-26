@@ -1,6 +1,0 @@
----
-namespace: metallb-system
-
-resources:
-  - v0.9.5/components.yaml
-  - config.yaml

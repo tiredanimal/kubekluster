@@ -1,4 +1,0 @@
----
-resources:
-  - v1.13.4/components.yaml
-  - calico-vxlan.yaml
