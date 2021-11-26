@@ -44,17 +44,18 @@
         cmd: '{{ hostvars["control1"]["kubeadm_join_cluster_command"] }}'
         creates: /etc/kubernetes/kubelet.conf
 
+# Needs two runs due to CRDs
 - hosts: localhost
   become: no
   tasks:
     - command:
-        cmd: kubectl apply -k ../kubernetes/base/tigera-operator
+        cmd: kubectl apply -k bootstrap/
       ignore_errors: yes
       environment:
         KUBECONFIG: admin.conf
     - pause:
         seconds: 5
     - command:
-        cmd: kubectl apply -k ../kubernetes/base/tigera-operator
+        cmd: kubectl apply -k bootstrap/
       environment:
         KUBECONFIG: admin.conf

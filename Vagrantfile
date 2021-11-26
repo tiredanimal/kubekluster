@@ -3,14 +3,17 @@
 
 ssh_public_key = "#{ENV['HOME']}/.ssh/id_ed25519.pub"
 
+worker_memory = 4096
+
 # These IPs are also used in the config for metallb: ./base/metallb/config.yaml 
 cluster = {
   "control1" => { :ip => "192.168.33.16",:memory=>4096, :vagrant_primary => true},
   # "control2" => { :ip => "192.168.33.17" },
   # "control3" => { :ip => "192.168.33.18" },
-  "worker1" => { :ip => "192.168.33.32",:memory=>4096},
-  "worker2" => { :ip => "192.168.33.33",:memory=>4096},
-  "worker3" => { :ip => "192.168.33.34",:memory=>4096}
+  "worker1" => { :ip => "192.168.33.32",:memory=>worker_memory},
+  "worker2" => { :ip => "192.168.33.33",:memory=>worker_memory},
+  "worker3" => { :ip => "192.168.33.34",:memory=>worker_memory},
+  "worker4" => { :ip => "192.168.33.35",:memory=>worker_memory}
 }
 
 Vagrant.configure("2") do |config|
@@ -49,7 +52,7 @@ Vagrant.configure("2") do |config|
           ansible.config_file = "./ansible/ansible.cfg"
           ansible.playbook = "./ansible/main.yaml"
           ansible.groups = {
-            "workers" => ["worker1","worker2","worker3"]
+            "workers" => ["worker1","worker2","worker3","worker4"]
           }
         end
       end
