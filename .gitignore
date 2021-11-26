@@ -7,3 +7,4 @@
 .vagrant
 admin.conf
 .vscode
+secrets
